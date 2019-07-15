@@ -34,4 +34,16 @@ router.post('/', validateAccount, async (req, res, next) => {
   }
 });
 
+router.put('/:id', [validateAccountId, validateAccount], async (req, res, next) => {
+  const changes = { name, budget } = req.body;
+  try {
+    await accountsDb.update(req.account.id, changes);
+    const account = await accountsDb.getById(req.account.id);
+    res.status(200).json(account);
+  }
+  catch (error) {
+    next(new Error('Account update failed. Kindly try again'));
+  }
+});
+
 module.exports = router;
