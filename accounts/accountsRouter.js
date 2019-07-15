@@ -5,9 +5,17 @@ const accountsDb = require('./accountsDb');
 const { validateAccountId, validateAccount } = require('../middlewares/accountsMiddleware');
 
 router.get('/', async (req, res, next) => {
+  const { limit, sortby, sortdir } = req.query;
   try {
-    const accounts = await accountsDb.get();
-    res.status(200).json(accounts);
+    if (limit && sortby && sortdir) {
+      const accounts = await accountsDb.get()
+        .orderBy(sortby, sortdir)
+        .limit(limit);
+      res.status(200).json(accounts);
+    } else {
+      const accounts = await accountsDb.get();
+      res.status(200).json(accounts);
+    }
   }
   catch (error) {
     next(new Error('Could not get accounts. Kindly try again'));
