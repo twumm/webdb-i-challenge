@@ -46,4 +46,14 @@ router.put('/:id', [validateAccountId, validateAccount], async (req, res, next) 
   }
 });
 
+router.delete('/:id', validateAccountId, async (req, res, next) => {
+  try {
+    const deleteCount = await accountsDb.remove(req.account.id);
+    res.status(200).json({ count: deleteCount, deletedAccount: req.account });
+  }
+  catch (error) {
+    next(new Error('Account could not be deleted. Kindly try again'));
+  }
+});
+
 module.exports = router;
