@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const accountsDb = require('./accountsDb');
+const { validateAccountId, validateAccount } = require('../middlewares/accountsMiddleware');
 
 router.get('/', async (req, res, next) => {
   try {
@@ -9,8 +10,17 @@ router.get('/', async (req, res, next) => {
     res.status(200).json(accounts);
   }
   catch (error) {
-    new Error('Could not get accounts. Kindly try again');
+    next(new Error('Could not get accounts. Kindly try again'));
   }
 });
+
+router.get('/:id', validateAccountId, async (req, res, next) => {
+  try {
+    res.status(200).json(req.account);
+  }
+  catch (error) {
+    next(new Error('Could not get account. Kindly try again'));
+  }
+})
 
 module.exports = router;
