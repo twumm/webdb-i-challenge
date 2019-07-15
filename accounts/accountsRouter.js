@@ -21,6 +21,17 @@ router.get('/:id', validateAccountId, async (req, res, next) => {
   catch (error) {
     next(new Error('Could not get account. Kindly try again'));
   }
-})
+});
+
+router.post('/', validateAccount, async (req, res, next) => {
+  const newAccount = { name, budget } = req.body;
+  try {
+    const account = await accountsDb.insert(newAccount);
+    res.status(201).json(account);
+  }
+  catch (error) {
+    next(new Error('Account creation failed. Kindly try again'));
+  }
+});
 
 module.exports = router;
