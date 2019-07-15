@@ -18,11 +18,11 @@ function validateAccount(req, res, next) {
   if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
     res.status(400).json({ message: 'Missing account data' });
   } else if (!req.body.name || !req.body.budget) {
-    res.status(400).json({ message: "Missing required *name* and *budget* fields" });
+    res.status(400).json({ message: 'Missing required *name* and *budget* fields' });
   } else {
     next();
   }
-};
+}
 
 module.exports = {
   validateAccountId,
